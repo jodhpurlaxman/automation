@@ -2,7 +2,20 @@
 #
 # @Author: lky Rajpurohit
 # 
+# 
+# usage:
+#           curl -sSL https://raw.githubusercontent.com/jodhpurlaxman/automation/master/apache-worker.sh | bash -s [PID]
+#
+# Replace '[PID]' with the PID of the parent apache process
 
+if [[ ! ${1} ]]; then
+    echo "Need to supply a PID";
+    echo 
+    echo "USAGE: curl -sSL https://raw.githubusercontent.com/jodhpurlaxman/automation/master/apache-worker.sh | bash -s [PID]"
+    echo 
+    echo 
+    exit 1
+fi
 
 MAX_PROCESS_RAM=${MAX_PROCESS_RAM:-400}
 echo
