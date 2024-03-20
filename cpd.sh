@@ -1,8 +1,10 @@
 #!/usr/bin/bash
 #Change Primary Domiain in Cpanel
 
-read -p "What is username? " cpanel_username 
-read -p "What is domain? " cpanel_domainname
+echo "What is username? "
+read cpanel_username 
+echo "What is domain? "
+read cpanel_domainname
 
 
 filename='/var/cpanel/userdata/$cpanel_username/$cpanel_domainname'
@@ -27,7 +29,6 @@ rm -vf $filename_SSL.cache
 /scripts/restartsrv_httpd
 
 #backup the existing file
-/var/cpanel/userdata/USER/DOMAIN.php-fpm.yaml
 cp $filename.php-fpm.yaml $filename.php-fpm.yaml.LX
 echo "php_admin_value_doc_root: { name: 'php_admin_value[doc_root]', value: /home/$cpanel_username/public_html/public }" >> $filename.php-fpm.yaml 
 /scripts/php_fpm_config --rebuild
