@@ -7,7 +7,7 @@ echo "What is domain? "
 read cpanel_domainname
 
 
-filename='/var/cpanel/userdata/${cpanel_username}/${cpanel_domainname}'
+filename=/var/cpanel/userdata/${cpanel_username}/${cpanel_domainname}
 
 #backup the existing file
 cp ${filename} ${filename}.LX
