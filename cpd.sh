@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #Change Primary Domiain in Cpanel
 
 echo "What is username? "
