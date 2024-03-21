@@ -7,7 +7,7 @@ cpanel_domainname=$2
 
 if [[ $# -eq 0 ]]
 then
-	echo "Arguments not given. Usage: ./checkcert.sh CERTIFICATE.crt PRIVKEY.key"
+	echo "Arguments not given. Usage: ./cpd.sh CERTIFICATE.crt PRIVKEY.key"
 else
     filename=/var/cpanel/userdata/${cpanel_username}/${cpanel_domainname}
     
