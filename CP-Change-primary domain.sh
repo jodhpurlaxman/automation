@@ -20,7 +20,9 @@ else
     
     #delete Cache file
     rm -vf ${filename}.cache
-    
+
+    #Backup SSL file
+    cp ${filename}_SSL ${filename}_SSL.LX
     sed -i 's#public_html#'public_html/public'#g' ${filename}_SSL
     
     #delete Cache file
