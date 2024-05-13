@@ -16,7 +16,7 @@ else
     
     #Add Public in existing path 
     sed -i 's#public_html#'public_html/public'#g' ${filename}
-    sed -i 's#cgi-bin#'public/cgi-bin'#g' ${filename}
+    #sed -i 's#cgi-bin#'public/cgi-bin'#g' ${filename}
     
     #delete Cache file
     rm -vf ${filename}.cache
