@@ -33,3 +33,4 @@ else
     echo "php_admin_value_doc_root: { name: 'php_admin_value[doc_root]', value: /home/${cpanel_username}/public_html/public }" >> $filename.php-fpm.yaml
     rm -vf ${filename}php-fpm.cache
     /scripts/php_fpm_config --rebuild && /scripts/restartsrv_apache_php_fpm
+fi
