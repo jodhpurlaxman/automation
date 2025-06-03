@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Define the log file path
+LOG_FILE="/var/log/sa/sa$(date +%d)"
+
+# Check if the log file exists
+if [ ! -f "$LOG_FILE" ]; then
+    echo "Log file $LOG_FILE does not exist."
+    exit 1
+fi
+
+# Use sar to extract memory statistics
+echo "Memory Statistics from $LOG_FILE:"
+echo "-----------------------------------"
+sar -r -f "$LOG_FILE" | awk 'NR>3 {printf "Time: %s, Free Memory: %.2f GB, Available Memory: %.2f GB, Used Memory: %.2f GB, Memory Usage: %.2f%%\n", $1, $2/1024/1024, $3/1024/1024, $4/1024/1024, $5}' 
+
+echo "-----------------------------------"
