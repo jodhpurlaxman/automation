@@ -23,14 +23,12 @@ OUTPUT_FILE="/tmp/sar$1.txt"
     echo "-----------------------------------"
 
     # Use sar to extract memory statistics
-    echo "Memory Statistics from $LOG_FILE:"
-    echo "-----------------------------------"
     sar -r -f "$LOG_FILE" | awk 'NR > 3 {
-        total_memory = ($2 + $4) / 1024;            # Total memory in MB (kbmemfree + kbmemused)
-        free_memory = ($2 + $6 + $7) / 1024;       # Free memory includes kbmemfree, buffers, and cached memory
-        used_memory = total_memory - free_memory;  # Used memory is total memory minus free memory
+        total_memory = ($2 + $4 + $6 + $7) / 1024 / 1024; # Sum all memory fields (kbmemfree, kbmemused, kbbuffers, kbcached) in GB
+        free_memory = ($2 + $6 + $7) / 1024 / 1024;       # Free memory includes kbmemfree, buffers, and cached memory
+        used_memory = ($4 - $6 - $7) / 1024 / 1024;       # Used memory excludes buffers and cached memory
         printf "Time: %s, Total Memory: %.2f GB, Free Memory: %.2f GB, Used Memory: %.2f GB\n",
-        $1, total_memory / 1024, free_memory / 1024, used_memory / 1024
+        $1, total_memory, free_memory, used_memory
     }'
     echo "-----------------------------------"
 
