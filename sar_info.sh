@@ -24,7 +24,7 @@ OUTPUT_FILE="/tmp/sar$1.txt"
 
     # Use sar to extract memory statistics
     sar -r -f "$LOG_FILE" | awk 'NR > 3 {
-    total_memory = ($3 + $4  $5+ $7 + $8 + $9 + $10 + $11 + $12 + $13) / 1024 / 1024; # Sum all memory fields (kbmemfree, kbmemused, kbbuffers, kbcached) in GB
+    total_memory = ($3 + $4 + $5 + $7 + $8 + $9 + $10 + $11 + $12 + $13) / 1024 / 1024; # Sum all memory fields (kbmemfree, kbmemused, kbbuffers, kbcached) in GB
     free_memory = ($2 + $6 + $7) / 1024 / 1024;       # Free memory includes kbmemfree, buffers, and cached memory
     used_memory = ($4 - $6 - $7) / 1024 / 1024;       # Used memory excludes buffers and cached memory
     printf "Time: %s, Total Memory: %.2f GB, Free Memory: %.2f GB, Used Memory: %.2f GB\n",
