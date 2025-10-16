@@ -1,16 +1,42 @@
 #!/bin/bash
 # Automated script to create a reverse proxy for a cPanel hosted domain
-# Usage: ./cpd.sh <cpanel_username> <cpanel_domainname> <proxy_port>
+# Usage: ./cpd.sh <cpanel_username> <cpanel_domainname> [proxy_port]
 
 cpanel_username=$1
 cpanel_domainname=$2
-proxy_port=$3
+proxy_port=${3:-3000}  # Default start port if not provided
 
 # --- Check Arguments ---
-if [[ $# -lt 3 ]]; then
+if [[ $# -lt 2 ]]; then
     echo "❌ Missing arguments."
-    echo "Usage: ./cpd.sh <cpanel_username> <cpanel_domainname> <proxy_port>"
+    echo "Usage: ./cpd.sh <cpanel_username> <cpanel_domainname> [proxy_port]"
     exit 1
+fi
+
+# --- Function to Check if Port is Free ---
+check_port() {
+    local port=$1
+    if ss -tuln | grep -q ":${port}\b"; then
+        return 1  # In use
+    else
+        return 0  # Free
+    fi
+}
+
+# --- Find Next Available Port ---
+start_port=$proxy_port
+while ! check_port "$proxy_port"; do
+    ((proxy_port++))
+    if [[ $proxy_port -gt 65535 ]]; then
+        echo "❌ No available ports found after $start_port"
+        exit 1
+    fi
+done
+
+if [[ $proxy_port -ne $start_port ]]; then
+    echo "⚠️ Port $start_port is in use. Using next available port: $proxy_port"
+else
+    echo "✅ Using port $proxy_port"
 fi
 
 # --- Define Paths ---
@@ -66,7 +92,8 @@ echo "🔧 Rebuilding and restarting Apache..."
 /usr/local/cpanel/scripts/restartsrv_httpd
 
 if [[ $? -eq 0 ]]; then
-    echo "✅ Proxy setup complete for domain: ${cpanel_domainname} on port ${proxy_port}"
+    echo "✅ Proxy setup complete for domain: ${cpanel_domainname}"
+    echo "🔗 Proxied to: http://127.0.0.1:${proxy_port}/"
 else
     echo "⚠️ Something went wrong while restarting Apache."
 fi
